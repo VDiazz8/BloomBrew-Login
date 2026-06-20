@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloom & Brew - Login</title>
+
+<style>
+:root{
+    --verde:#4A7C59;
+    --bege:#F5F1E8;
+    --cafe:#6F4E37;
+    --dourado:#D4AF37;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#4A7C59,#6F4E37);
+}
+
+.login-box{
+    width:350px;
+    padding:30px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(10px);
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.logo{
+    color:var(--bege);
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.flower{
+    margin-bottom:20px;
+}
+
+.petal{
+    transform-origin:100px 100px;
+    transition:0.8s ease;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:8px 0;
+    border:none;
+    border-radius:10px;
+    outline:none;
+    background:rgba(255,255,255,0.2);
+    color:white;
+}
+
+input::placeholder{
+    color:rgba(255,255,255,0.8);
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    border:none;
+    border-radius:10px;
+    background:var(--dourado);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    opacity:0.5;
+    transition:0.3s;
+}
+
+button.active{
+    opacity:1;
+}
+
+.status{
+    color:var(--bege);
+    margin-top:10px;
+    font-size:14px;
+}
+
+.senha-container{
+    position:relative;
+    width:100%;
+    margin:8px 0;
+}
+
+.senha-container input{
+    width:100%;
+    padding:12px;
+    padding-right:50px;
+    border:none;
+    border-radius:10px;
+    outline:none;
+    background:rgba(255,255,255,0.2);
+    color:white;
+}
+
+#toggleSenha{
+    position:absolute;
+    right:8px;
+    top:50%;
+    transform:translateY(-50%);
+    width:35px;
+    height:35px;
+    border:none;
+    border-radius:8px;
+    background:rgba(255,255,255,0.15);
+    color:white;
+    cursor:pointer;
+    padding:0;
+    margin:0;
+    opacity:1;
+}
+
+#toggleSenha:hover{
+    background:rgba(255,255,255,0.25);
+}
+</style>
+</head>
+<body>
+
+<div class="login-box">
+
+    <div class="logo">Bloom & Brew</div>
+
+    <div class="flower">
+        <svg width="200" height="180">
+
+            <!-- Pétalas -->
+            <ellipse class="petal" id="p1" cx="100" cy="60" rx="18" ry="40" fill="#F7A8C4"/>
+            <ellipse class="petal" id="p2" cx="100" cy="60" rx="18" ry="40" fill="#F7A8C4" transform="rotate(72 100 100)"/>
+            <ellipse class="petal" id="p3" cx="100" cy="60" rx="18" ry="40" fill="#F7A8C4" transform="rotate(144 100 100)"/>
+            <ellipse class="petal" id="p4" cx="100" cy="60" rx="18" ry="40" fill="#F7A8C4" transform="rotate(216 100 100)"/>
+            <ellipse class="petal" id="p5" cx="100" cy="60" rx="18" ry="40" fill="#F7A8C4" transform="rotate(288 100 100)"/>
+
+            <!-- Centro -->
+            <circle cx="100" cy="100" r="18" fill="#D4AF37"/>
+
+            <!-- Caule -->
+            <rect x="96" y="118" width="8" height="50" fill="#4A7C59"/>
+
+        </svg>
+    </div>
+
+    <input type="email" id="email" placeholder="E-mail">
+
+    <div class="senha-container">
+    <input type="password" id="senha" placeholder="Senha">
+    <button type="button" id="toggleSenha">👁</button>
+</div>
+
+    <button id="entrar">Entrar</button>
+
+    <div class="status" id="status">
+        Digite seu e-mail para fazer a flor florescer 🌱
+    </div>
+
+    
+
+</div>
+
+<script>
+
+const email = document.getElementById("email");
+const senha = document.getElementById("senha");
+const botao = document.getElementById("entrar");
+const status = document.getElementById("status");
+
+const toggleSenha = document.getElementById("toggleSenha");
+
+toggleSenha.addEventListener("click", () => {
+
+    if(senha.type === "password"){
+        senha.type = "text";
+        toggleSenha.innerHTML = "🙈";
+    }else{
+        senha.type = "password";
+        toggleSenha.innerHTML = "👁";
+    }
+
+});
+
+const petals = document.querySelectorAll(".petal");
+
+function atualizarFlor(){
+
+    let progresso = 0;
+
+    if(email.value.length > 0){
+        progresso = 0.5;
+        status.innerHTML = "A flor está abrindo 🌸";
+    }
+
+    if(email.value.length > 0 && senha.value.length > 0){
+        progresso = 1;
+        status.innerHTML = "Flor completamente aberta! 🌺";
+        botao.classList.add("active");
+    }else{
+        botao.classList.remove("active");
+    }
+
+    petals.forEach((petala, index)=>{
+
+        let escala = 0.5 + progresso;
+
+        petala.style.transform =
+        `rotate(${index*72}deg) scale(${escala})`;
+
+    });
+
+}
+
+email.addEventListener("input", atualizarFlor);
+senha.addEventListener("input", atualizarFlor);
+
+botao.addEventListener("click", ()=>{
+
+    if(
+        email.value.trim() !== "" &&
+        senha.value.trim() !== ""
+    ){
+        alert("Login realizado com sucesso!");
+    }else{
+        alert("Preencha todos os campos.");
+    }
+
+});
+
+</script>
+
+</body>
+</html>
